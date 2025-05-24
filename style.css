@@ -1,0 +1,258 @@
+
+body {
+    font-family: Arial, sans-serif; /* A common, readable font */
+    display: flex; /* Use flexbox for easy centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Make sure the body takes at least the full viewport height */
+    margin: 0; /* Remove default body margin */
+    background-color: #f0f2f5; /* Light background color */
+    color: #333; /* Dark text color */
+    text-align: center; /* Center text within the container */
+}
+
+.container {
+    background-color: #ffffff; /* White background for the content area */
+    padding: 40px; /* Space inside the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 90%; /* Take up 90% of the screen width */
+    max-width: 500px; /* But don't get too wide on large screens */
+}
+
+h1 {
+    color: #8a2be2; /* A nice purple for the heading */
+    margin-bottom: 10px; /* Space below the heading */
+    font-size: 2.5em; /* Larger font size */
+}
+
+.tagline {
+    font-size: 1.2em; /* Slightly larger font for the tagline */
+    margin-bottom: 30px; /* More space below the tagline */
+    color: #555; /* Slightly muted color */
+}
+
+button {
+    background-color: #8a2be2; /* Purple background for buttons */
+    color: white; /* White text on buttons */
+    padding: 12px 25px; /* Padding inside buttons */
+    border: none; /* No border */
+    border-radius: 5px; /* Slightly rounded buttons */
+    font-size: 1em; /* Standard font size */
+    cursor: pointer; /* Indicate it's clickable */
+    margin: 10px; /* Space between buttons */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #6a0dad; /* Darker purple on hover */
+}
+/* Styles for input groups on User Info page */
+.input-group {
+    margin-bottom: 20px; /* Space between input groups */
+    text-align: left; /* Align labels and inputs to the left */
+}
+
+.input-group label {
+    display: block; /* Make label take its own line */
+    margin-bottom: 8px; /* Space between label and input */
+    font-weight: bold; /* Make labels stand out */
+    color: #6a0dad; /* A slightly darker purple for labels */
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px;
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="number"]:focus {
+    outline: none; /* Remove default outline */
+    border-color: #8a2be2; /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(138, 43, 226, 0.3); /* Subtle shadow on focus */
+}
+
+.error-message {
+    color: #ff4d4f; /* Red color for error messages */
+    font-size: 0.9em;
+    margin-top: 5px;
+    height: 1.2em; /* Reserve space to prevent layout shifting */
+}
+
+.generation-display {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #8a2be2; /* Purple color for the generation display */
+    margin-top: -10px; /* Pull it closer to the input */
+    margin-bottom: 30px; /* Space below it */
+}
+
+/* Specific style for the Home button on top */
+.top-button {
+    position: absolute; /* Position it relative to its closest positioned ancestor (body or container) */
+    top: 20px; /* 20px from the top */
+    left: 20px; /* 20px from the left */
+    padding: 8px 15px; /* Smaller padding */
+    font-size: 0.9em; /* Smaller font */
+}
+
+/* Adjust container padding to prevent content from going under the home button */
+/* This is a simple fix for now, more robust solutions might be needed for complex layouts */
+@media (min-width: 550px) { /* Only apply for wider screens where top-button is absolutely positioned */
+    .container {
+        padding-top: 80px; /* Add more padding at the top of the container */
+    }
+}
+/* Quiz Page Specific Styles */
+.options-container {
+    display: flex;
+    flex-direction: column; /* Stack options vertically */
+    gap: 15px; /* Space between option buttons */
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.option-button {
+    background-color: #e0e0e0; /* Light grey for unselected options */
+    color: #333;
+    padding: 15px;
+    border: 2px solid #ccc; /* Slightly darker border */
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-align: left; /* Align text to the left within the button */
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    width: 100%; /* Full width for options */
+    box-sizing: border-box; /* Include padding/border in width */
+}
+
+.option-button:hover {
+    background-color: #d0d0d0;
+    border-color: #8a2be2; /* Highlight border on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.option-button.selected {
+    background-color: #8a2be2; /* Purple for selected option */
+    color: white;
+    border-color: #6a0dad; /* Darker purple border */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between; /* Space out previous and next buttons */
+    margin-top: 40px;
+}
+
+.nav-button {
+    /* Inherits general button styles but we can override */
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    margin: 0 5px; /* Small margin between them */
+    padding: 12px 20px; /* Adjust padding */
+}
+
+.nav-button:first-child {
+    margin-left: 0;
+}
+
+.nav-button:last-child {
+    margin-right: 0;
+}
+
+.fun-fact-box {
+    background-color: #fffacd; /* Light yellow background */
+    border: 1px solid #ffe082; /* Yellow border */
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 30px;
+    font-size: 0.95em;
+    color: #664b00; /* Darker text for readability */
+    text-align: center;
+    overflow: hidden; /* Hide overflowing text for animation */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+#funFactText {
+    display: inline-block; /* Essential for text animation */
+    /* Animation will be added via JavaScript/dynamic CSS */
+}
+
+/* ---------------------------------------------Result Page Specific Styles --------------------*/
+.nickname-display {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.aura-score-box {
+    background-color: #8a2be2; /* Purple background for the score box */
+    color: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.aura-score-box p {
+    margin: 5px 0; /* Adjust spacing within the box */
+}
+
+.aura-score {
+    font-size: 4em; /* Very large font for the score */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
+}
+
+.vibe-tagline {
+    font-size: 1.5em; /* Larger font for the tagline */
+    font-style: italic; /* Italicize the tagline */
+    color: #6a0dad; /* Darker purple color */
+    margin-bottom: 40px;
+}
+
+.share-card-placeholder {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #eee; /* A subtle line to separate */
+}
+
+.share-card-placeholder p {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.share-button {
+    background-color: #555; /* Default grey for share buttons */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#shareFacebook {
+    background-color: #3b5998; /* Facebook blue */
+}
+
+#shareFacebook:hover {
+    background-color: #2d4373;
+}
+
+#shareTwitter {
+    background-color: #1DA1F2; /* Twitter blue */
+}
+
+#shareTwitter:hover {
+    background-color: #0c85d0;
+}

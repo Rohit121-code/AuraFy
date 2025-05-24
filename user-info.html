@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraFy - Your Info</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="container">
+        <button id="homeButton" class="top-button">Home</button>
+
+        <h2>Tell Us About Your Aura!</h2>
+
+        <div class="input-group">
+            <label for="nicknameInput">Nickname (max 8 chars):</label>
+            <input type="text" id="nicknameInput" maxlength="8" placeholder="e.g., AuraMaster">
+            <p class="error-message" id="nicknameError"></p>
+        </div>
+
+        <div class="input-group">
+            <label for="birthYearInput">Birth Year (optional):</label>
+            <input type="number" id="birthYearInput" placeholder="e.g., 1998" min="1900" max="2025">
+        </div>
+
+        <p class="generation-display" id="generationDisplay"></p>
+
+        <button id="continueButton">Continue</button>
+    </div>
+
+    <script src="user-info-script.js"></script> </body>
+</html>
