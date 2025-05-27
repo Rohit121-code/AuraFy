@@ -1,0 +1,226 @@
+/* user-info-page-style.css */
+
+/* --- User Info Page Body Styling (Background Animation) --- */
+.user-info-page {
+    background-color: #1a1a2e; /* Dark background for animation contrast */
+    overflow: hidden; /* Prevent scrollbars from background animation */
+    position: relative; /* For absolutely positioning elements */
+    min-height: 100vh; /* Ensure full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: center; /* Center horizontally */
+    padding: 20px;
+    box-sizing: border-box;
+    justify-content: flex-start; /* Align content to the top initially */
+}
+
+/* --- Background Animation (Slightly different from home page) --- */
+.user-info-page::before,
+.user-info-page::after {
+    content: '';
+    position: absolute;
+    width: 150vw; /* Slightly smaller than home page for less 'busyness' */
+    height: 150vh;
+    background: linear-gradient(
+        135deg, /* Different angle */
+        rgba(0, 255, 255, 0.1) 0%, /* Cyan */
+        rgba(138, 43, 226, 0.1) 50%, /* Purple */
+        rgba(0, 255, 255, 0.1) 100%
+    );
+    animation: userBgMove 30s linear infinite alternate; /* Different animation and speed */
+    opacity: 0.6;
+    z-index: -1;
+    filter: blur(60px); /* Slightly less blur for more defined shapes */
+}
+
+.user-info-page::before {
+    top: -20%;
+    left: -20%;
+    transform: rotate(45deg);
+}
+
+.user-info-page::after {
+    bottom: -20%;
+    right: -20%;
+    transform: rotate(-75deg);
+    animation-duration: 35s; /* Different speed */
+    opacity: 0.4;
+}
+
+@keyframes userBgMove {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-30%, -30%) rotate(360deg); } /* Move and rotate */
+}
+
+/* --- AuraFy Home Button (Top Left) --- */
+.aura-fy-home-button {
+    position: absolute; /* Position relative to the body */
+    top: 20px;
+    left: 20px;
+    background-color: transparent; /* Transparent background */
+    border: 2px solid #00ffff; /* Cyan border */
+    color: #c8eaea; /* Cyan text */
+    padding: 8px 15px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Initial glow */
+    transition: all 0.3s ease;
+    z-index: 10; /* Ensure it's on top */
+}
+
+.aura-fy-home-button:hover {
+    background-color: rgba(0, 255, 255, 0.1); /* Subtle background on hover */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); /* More intense glow */
+    transform: translateY(-2px);
+}
+
+.aura-fy-home-button:active {
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    background-color: rgba(0, 255, 255, 0.2);
+}
+
+/* --- Central Content Layout --- */
+.user-info-content {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 40px; /* Keep this to push it down from top */
+    /* margin-bottom: auto;  <--- REMOVE OR CHANGE THIS */
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-heading {
+    color: #e6e6fa; /* Lighter purple/white for contrast */
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.5); /* Glowing text effect */
+}
+
+/* Re-style input-group for transparent background */
+.input-group {
+    width: 100%; /* Ensure inputs take full width of content box */
+    margin-bottom: 15px;
+    text-align: left; /* Align label and input to left within its group */
+}
+
+.input-group label {
+    display: block; /* Make label appear above input */
+    color: #b0e0e6; /* Light blue/cyan for labels */
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent input background */
+    color: white; /* White text */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    width: calc(100% - 30px); /* Adjust width for padding */
+    box-sizing: border-box; /* Include padding in width */
+    transition: all 0.3s ease;
+}
+
+.input-group input[type="text"]::placeholder,
+.input-group input[type="number"]::placeholder {
+    color: rgba(255, 255, 255, 0.5); /* Lighter placeholder text */
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="number"]:focus {
+    border-color: #00ffff; /* Cyan border on focus */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); /* Cyan glow on focus */
+    background-color: rgba(255, 255, 255, 0.15); /* Slightly less transparent on focus */
+    transform: scale(1.0); /* Remove the scale on focus for these inputs for now, or keep it if you like */
+}
+
+.error-message, .generation-display {
+    font-size: 0.9em;
+    margin-top: 5px;
+    height: 1.2em; /* Reserve space to prevent layout shift */
+}
+
+.error-message { /* Keep this as is for error messages */
+    font-size: 0.9em;
+    margin-top: 5px;
+    height: 1.2em; /* Keep this to prevent layout shift for nickname error */
+}
+
+.generation-display { /* Modify this one */
+    font-size: 1.1em; /* Adjust font size for better visibility */
+    margin-top: -5px; /* Pull it slightly closer to the input above it */
+    margin-bottom: 5px; /* Push it slightly closer to the button below it */
+    /* Remove height: 1.2em; as it's no longer inside an input-group */
+    color: #b0e0e6;
+    font-style: italic;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+.main-action-button {
+    /* Use our general button styles but override specific ones */
+    background-color: #00ffff; /* Cyan color */
+    color: #1a1a2e; /* Dark text */
+    padding: 15px 35px;
+    font-size: 1.2em;
+    border-radius: 50px; /* Pill shape */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Glowing shadow */
+    margin-top: 20px; /* Space from inputs */
+}
+
+.main-action-button:hover {
+    background-color: #00dddd;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
+    transform: translateY(-5px); /* More pronounced hover */
+}
+
+.main-action-button:active {
+    background-color: #00aaaa;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transform: translateY(0);
+}
+
+/* Animation for Generation Display */
+.generation-display.animate {
+    animation: fadeInScale 0.7s ease-out forwards; /* Define the animation */
+    /* Ensure initial state is hidden for animation */
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(5px); /* Start slightly blurred */
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05); /* Slightly overshoot for a subtle bounce */
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+/* Ensure general .container styles don't affect this page */
+/* This is done by adding a class to body and linking user-info-page-style.css */

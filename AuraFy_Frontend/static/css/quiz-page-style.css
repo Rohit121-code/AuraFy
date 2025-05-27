@@ -1,0 +1,281 @@
+/* quiz-page-style.css */
+
+/* --- ROOT ELEMENTS (HTML, BODY) for ensuring scrollability --- */
+html, body {
+    height: 100%; /* Ensure HTML and Body take full viewport height */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-y: auto;   /* Allow vertical scroll if content exceeds viewport */
+    background-color: #1a1a2e; /* Apply base background here */
+}
+
+/* --- Quiz Page Body Base Styling --- */
+.quiz-page {
+    position: relative;
+    min-height: 100vh; /* Make sure it takes full viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px; /* Ample padding on top/bottom */
+    box-sizing: border-box;
+    justify-content: center; /* CHANGE: Center content vertically within the 100vh */
+}
+
+/* --- Re-use AuraFy Home Button Style --- */
+.aura-fy-home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 8px 15px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    z-index: 10; /* Ensure button is above other content */
+}
+
+.aura-fy-home-button:hover {
+    background-color: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+.aura-fy-home-button:active {
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    background-color: rgba(0, 255, 255, 0.2);
+}
+
+/* --- Quiz Content Wrapper --- */
+.quiz-content {
+    background-color: rgba(255, 255, 255, 0.05); /* Subtle transparent background */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    border-radius: 15px;
+    padding: 40px;
+    margin: 20px auto; /* Centered with vertical margin */
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3); /* Subtle purple glow */
+    text-align: center;
+    width: 90%;
+    max-width: 700px; /* Wider for questions/options */
+    z-index: 1; /* Ensure content is above background animations */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px; /* Space between elements */
+    min-height: 600px; /* Kept at 600px. It can grow, but will try to fit in viewport. */
+    flex-shrink: 1; /* Allow this item to shrink if there's not enough space */
+}
+
+/* --- Question Counter --- */
+.question-counter {
+    color: #b0e0e6;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+/* --- Question Text --- */
+#questionText {
+    color: #e6e6fa;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+    min-height: 3em; /* Reserve space to prevent layout shifts during animation */
+    display: flex; /* Use flex to center text vertically and horizontally */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.3; /* Improve readability for multi-line questions */
+}
+
+/* --- Options Container --- */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px; /* Space between option buttons */
+    margin-bottom: 20px;
+}
+
+/* --- Option Buttons (from style.css but with overrides) --- */
+.option-button {
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+    color: #e6e6fa;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to left within button */
+    width: 100%; /* Ensure buttons take full width */
+}
+
+.option-button:hover {
+    background-color: rgba(0, 255, 255, 0.2); /* Cyan tint on hover */
+    border-color: #00ffff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+}
+
+.option-button.selected {
+    background-color: #00ffff; /* Solid cyan when selected */
+    color: #1a1a2e; /* Dark text on selected */
+    border-color: #00ffff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 255, 255, 0.35);
+    font-weight: bold;
+}
+
+/* --- Fun Fact --- */
+.fun-fact {
+    color: #b0e0e6;
+    font-style: italic;
+    font-size: 0.95em;
+    min-height: 2.5em; /* Reserve space for fun fact to prevent layout shifts */
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    opacity: 0; /* Hidden initially for typing animation */
+    visibility: hidden; /* Hide before animation */
+    overflow: hidden; /* Hide overflowing characters during typing */
+    border-right: .15em solid orange; /* The blinking cursor effect */
+    white-space: nowrap; /* Keep text on single line for typing effect (important!) */
+    margin: 0 auto; /* Center fun fact horizontally */
+    max-width: 90%; /* Limit width for typing effect */
+    text-align: center; /* Center the text inside its box */
+}
+
+/* Typing animation keyframes (from previous general CSS) */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+}
+
+/* Class to trigger typing animation (added by JS) */
+.fun-fact.typing-animation {
+    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+    opacity: 1; /* Make visible when animation starts */
+    visibility: visible;
+    white-space: normal; /* Allow wrapping after typing animation is done */
+}
+
+
+/* --- Navigation Buttons --- */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: auto; /* Push to the bottom of quiz-content */
+}
+
+.nav-button {
+    background-color: #8a2be2; /* Purple */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    font-weight: normal;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: #6a0dad;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.nav-button:active {
+    background-color: #5a0a9d;
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Specific styling for the 'Next' button if it's the final one */
+#nextButton.final-button {
+    background-color: #00ffff; /* Cyan for final */
+    color: #1a1a2e; /* Dark text */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    font-weight: bold;
+    padding: 12px 25px; /* Slightly larger */
+}
+
+#nextButton.final-button:hover {
+    background-color: #00dddd;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
+}
+
+#nextButton.final-button:active {
+    background-color: #00aaaa;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+
+/* --- Question and Option Reveal Animations --- */
+
+/* Question Animation */
+.question-animation {
+    opacity: 0; /* Hidden initially */
+    transform: translateY(20px); /* Start slightly below */
+    filter: blur(5px); /* Start slightly blurred */
+    animation: slideInQuestion 0.8s ease-out forwards;
+}
+
+@keyframes slideInQuestion {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Option Reveal Animation (will be added via JS as .animated-option) */
+.animated-option {
+    opacity: 0; /* Hidden initially */
+    transform: scale(0.8); /* Start scaled down */
+    animation: popInOption 0.4s ease-out forwards;
+    /* Delay will be added by JavaScript for staggered effect */
+}
+
+@keyframes popInOption {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Loading Message Style --- */
+h3 { /* This targets the loading message created dynamically in JS */
+    color: #00ffff; /* Cyan color */
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    margin-top: 50px;
+    animation: pulse 1.5s infinite alternate; /* Apply pulse animation */
+}
+
+/* Pulse animation keyframes for loading message */
+@keyframes pulse {
+    0% { opacity: 0.7; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
+}

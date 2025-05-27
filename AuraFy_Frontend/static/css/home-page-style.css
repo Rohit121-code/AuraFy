@@ -1,0 +1,165 @@
+/* home-page-style.css */
+
+/* --- Home Page Body Styling (Background Animation) --- */
+.home-page {
+    background-color: #1a1a2e; /* Dark background for animation contrast */
+    overflow: hidden; /* Prevent scrollbars from background animation */
+    position: relative; /* For absolutely positioning elements */
+    min-height: 100vh; /* Ensure full viewport height */
+    display: flex; /* Use flexbox for overall layout */
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Space out top, center, bottom elements */
+    align-items: center; /* Center horizontally */
+    padding: 20px; /* Some padding around the edges */
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+/* --- Background Animation (Abstract Flowing Lines) --- */
+/* This creates multiple layers of animated elements */
+.home-page::before,
+.home-page::after,
+.home-page > div::before { /* Target pseudo-elements and a child div's pseudo-element for layers */
+    content: '';
+    position: absolute;
+    width: 200vw; /* Make them wider than screen for seamless animation */
+    height: 200vh;
+    background: linear-gradient(45deg,
+        rgba(138, 43, 226, 0.1) 0%, /* Purple */
+        rgba(0, 255, 255, 0.1) 25%, /* Cyan */
+        rgba(255, 0, 255, 0.1) 50%, /* Magenta */
+        rgba(138, 43, 226, 0.1) 75%,
+        rgba(0, 255, 255, 0.1) 100%
+    );
+    animation: backgroundMove 40s linear infinite; /* Longer duration for slow flow */
+    opacity: 0.7; /* Make them semi-transparent */
+    z-index: -1; /* Send to background */
+    filter: blur(80px); /* Blur for abstract effect */
+}
+
+.home-page::before {
+    top: -50%;
+    left: -50%;
+    transform: rotate(30deg); /* Different rotation for layers */
+}
+
+.home-page::after {
+    bottom: -50%;
+    right: -50%;
+    transform: rotate(-60deg); /* Different rotation for layers */
+    animation-duration: 50s; /* Different speed */
+    opacity: 0.5;
+}
+
+.home-page > div::before { /* Targeting a child div to create a third layer, if any */
+    top: 20%;
+    left: -20%;
+    transform: rotate(0deg);
+    animation-duration: 35s; /* Different speed */
+    opacity: 0.6;
+    filter: blur(100px);
+}
+
+
+@keyframes backgroundMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-50%, -50%); } /* Moves diagonally */
+}
+
+
+/* --- Home Page Layout (Replacing .container) --- */
+.home-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: flex-start; /* Align main title and tagline to the top */
+    align-items: center; /* Center horizontally */
+    width: 100%;
+    max-width: 600px; /* Keep a max width for content */
+    flex-grow: 1; /* Allow container to grow and push elements */
+    position: relative; /* For absolute positioning of start button within it if needed, or simply for z-index */
+    z-index: 1; /* Keep content above background */
+    padding: 0; /* Remove default container padding */
+    background: none; /* Remove background from this container */
+    box-shadow: none; /* Remove shadow */
+    border-radius: 0; /* Remove border radius */
+}
+
+/* Specific positioning for elements within home-container */
+.main-title {
+    color: #e6e6fa; /* Lighter purple/white for contrast */
+    margin-top: 5vh; /* Push from the very top of the viewport */
+    font-size: 3.5em; /* Larger font */
+    text-shadow: 0 0 15px rgba(138, 43, 226, 0.7), 0 0 25px rgba(0, 255, 255, 0.5); /* Glowing text effect */
+    z-index: 2; /* Ensure it's above other elements if needed */
+}
+
+.tagline {
+    color: #b0e0e6; /* Light blue/cyan for contrast */
+    font-size: 1.5em;
+    margin-bottom: auto; /* Pushes the start button to the center */
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    z-index: 2;
+}
+
+.center-button-wrapper {
+    flex-grow: 1; /* This wrapper will take up remaining space to push the start button to center */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center the start button */
+    width: 100%;
+    z-index: 2;
+}
+
+#startButton {
+    margin: 0; /* Remove default button margin here */
+    padding: 18px 40px; /* Larger padding for start button */
+    font-size: 1.3em;
+    background-color: #00ffff; /* Cyan color */
+    color: #1a1a2e; /* Dark text */
+    border-radius: 50px; /* Pill shape */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Glowing shadow */
+}
+
+#startButton:hover {
+    background-color: #00dddd;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
+    transform: scale(1.05) translateY(-5px); /* More pronounced hover */
+}
+
+#startButton:active {
+    background-color: #00aaaa;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transform: scale(0.98) translateY(0);
+}
+
+
+.exit-button {
+    margin-top: auto; /* Pushes button to the bottom */
+    margin-bottom: 20px; /* Space from the bottom edge */
+    padding: 10px 20px;
+    font-size: 0.9em;
+    background-color: transparent; /* Transparent background */
+    border: 2px solid #ff4d4f; /* Red border */
+    color: #ff4d4f; /* Red text */
+    box-shadow: none; /* No shadow by default */
+    z-index: 2;
+}
+
+.exit-button:hover {
+    background-color: rgba(255, 77, 79, 0.1); /* Slight red tint on hover */
+    box-shadow: 0 0 10px rgba(255, 77, 79, 0.5); /* Red glowing shadow */
+    transform: translateY(-2px);
+}
+
+.exit-button:active {
+    background-color: rgba(255, 77, 79, 0.2);
+    transform: translateY(0);
+    box-shadow: 0 0 5px rgba(255, 77, 79, 0.3);
+}
+
+/* Hide the Home button on the Home page itself, if it was going to show due to top-button class */
+#homeButton {
+    display: none !important; /* Force hide it */
+}

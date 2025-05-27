@@ -1,0 +1,75 @@
+/* Basic body styles for consistent background and font */
+body {
+    background-color: #1a1a2e; /* Dark background from your quiz/result pages */
+    color: #e0e0e0; /* Light text color */
+    font-family: 'Press Start 2P', cursive; /* Consistent font */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    margin: 0;
+    padding: 20px; /* Some padding around content */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+    text-align: center;
+    /* Fade-in transition for the entire page body */
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+body.page-fade-in {
+    opacity: 1;
+}
+
+/* Styling for the central message box */
+.message-box {
+    background-color: #0f3460; /* A slightly lighter dark blue */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* More prominent shadow */
+    max-width: 600px; /* Max width for readability */
+    width: 90%; /* Responsive width */
+    animation: fadeIn 1s ease-out forwards; /* Fade in animation */
+}
+
+/* Heading styling */
+h1 {
+    color: #00ffff; /* Neon blue */
+    font-size: 2.5em; /* Larger heading */
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; /* Neon glow */
+}
+
+/* Paragraph text styling */
+p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Call-to-action button styling */
+.cta-button {
+    background-color: #e94560; /* Your red/pinkish accent color */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none; /* For link styling */
+    display: inline-block; /* Allows padding and margin */
+    margin-top: 20px;
+}
+
+.cta-button:hover {
+    background-color: #c93d53;
+    transform: translateY(-2px);
+}
+
+/* Keyframes for the message box fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

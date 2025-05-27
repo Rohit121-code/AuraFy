@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraFy - Your Aura Revealed!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/css/result-page-style.css">
+    <link id="generationBackgroundStyle" rel="stylesheet" href="">
+</head>
+<body class="page-fade-in">
+
+    <div class="aura-fy-home-button">
+        <button id="homeButton">AuraFy</button>
+    </div>
+
+    <div class="exit-button">
+        <button id="exitButton">EXIT</button>
+    </div>
+
+    <div class="result-container">
+        <div class="aura-info-column">
+            <h1 class="main-title">Your Aura Has Been Revealed!</h1>
+            <p class="nickname-message">Hey <span id="nicknameDisplay"></span>, your <span id="generationDisplay"></span> Aura is...</p>
+            
+            <div class="aura-image-container">
+                <img id="auraImage" src="" alt="Your Aura Image" style="display: none;">
+            </div>
+
+            <div class="aura-type-display">
+                <h2 class="aura-type" id="auraType">Calculating Your Aura...</h2>
+                <div class="aura-score-box">
+                    <p>Your Aura Score is:</p>
+                    <p class="aura-score" id="auraScoreDisplay">--</p>
+                </div>
+            </div>
+
+            <p class="aura-description" id="auraDescription"></p>
+            <p class="vibe-tagline" id="vibeTaglineDisplay">Uncovering your unique vibe...</p>
+
+            <div class="result-actions">
+                <button id="restartButton" class="nav-button">Retake Quiz</button>
+            </div>
+        </div>
+
+        <div class="share-column">
+            <p class="share-prompt">Share your Aura!</p>
+            <div class="share-buttons">
+                <button class="share-button" id="shareFacebook">
+                    <img src="../static/images/facebook.png" alt="Facebook Logo"> Facebook
+                </button>
+                <button class="share-button" id="shareInstagram">
+                    <img src="../static/images/instagram.png" alt="Instagram Logo"> Instagram
+                </button>
+                <button class="share-button" id="shareTwitter">
+                    <img src="../static/images/twitter.png" alt="Twitter Logo"> X (Twitter)
+                </button>
+                </div>
+        </div>
+    </div>
+
+    <script src="../static/js/result-script.js"></script>
+</body>
+</html>
