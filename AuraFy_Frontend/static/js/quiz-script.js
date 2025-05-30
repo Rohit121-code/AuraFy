@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fetchQuestionsFromAI = async () => {
         try {
             // Use POST method as per typical AI API design for sending data in body
-            const response = await fetch('http://127.0.0.1:5000/generate_quiz_questions', {
+            const response = await fetch('https://aurafy-backend.onrender.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
