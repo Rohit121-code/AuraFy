@@ -1,10 +1,36 @@
 [build]
+  # IMPORTANT: In Netlify UI, set 'Base directory' to 'AuraFy_Frontend'.
+  # This 'publish' then means the root of that 'Base directory'.
+  publish = "." #
+  command = "echo No build command" # No build command is needed for static HTML/CSS/JS
 
-  # It's better to let Netlify implicitly set the base from the UI's 'Base directory' for simplicity.
-  publish = "templates" # <--- Remove the leading slash!
-  command = "echo No build command"
+# Redirects are crucial for your HTML files which are in 'templates'
+# This ensures paths like / or /quiz get mapped correctly.
+# If your app navigates client-side, these also ensure direct URL access works.
+
+# Redirect for the main landing page
+[[redirects]]
+  from = "/"
+  to = "/templates/index.html" # Redirects the base URL to your main index.html
+  status = 200
+
+# Redirects for your other HTML pages
+[[redirects]]
+  from = "/quiz"
+  to = "/templates/quiz.html" #
+  status = 200
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/user-info"
+  to = "/templates/user-info.html" #
+  status = 200
+
+[[redirects]]
+  from = "/result"
+  to = "/templates/result.html" #
+  status = 200
+
+[[redirects]]
+  from = "/exit"
+  to = "/templates/exit.html" #
   status = 200
