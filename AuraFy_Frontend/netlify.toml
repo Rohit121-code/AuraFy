@@ -1,6 +1,7 @@
 [build]
-  base = "/"
-  publish = "/templates" # <--- IMPORTANT CHANGE HERE
+
+  # It's better to let Netlify implicitly set the base from the UI's 'Base directory' for simplicity.
+  publish = "templates" # <--- Remove the leading slash!
   command = "echo No build command"
 
 [[redirects]]
