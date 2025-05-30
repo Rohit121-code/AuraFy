@@ -1,0 +1,9 @@
+[build]
+  base = "/"
+  publish = "/templates" # <--- IMPORTANT CHANGE HERE
+  command = "echo No build command"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
