@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Add more else if blocks for other generations as you create their CSS files
 
         if (backgroundCssFile) {
-             generationBackgroundStyleLink.href = `../static/css/${backgroundCssFile}`;
+             generationBackgroundStyleLink.href = `/static/css/${backgroundCssFile}`;
         } else {
             console.warn(`No specific background found for generation: ${userGeneration}. Using default quiz page background.`);
             generationBackgroundStyleLink.href = ''; // Clear href if no specific file

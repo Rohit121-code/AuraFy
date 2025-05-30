@@ -61,25 +61,25 @@ document.addEventListener('DOMContentLoaded', () => {
             name: "Fading Aura",
             scoreRange: [0, 2], // 0-2 points
             description: "Your aura is still finding its frequency. Keep exploring and discovering your true vibe!",
-            image: "../static/images/aura_fading.png" // Path to your image for this aura
+            image: "/static/images/aura_fading.png" // Path to your image for this aura
         },
         {
             name: "Calm Aura",
             scoreRange: [3, 5], // 3-5 points
             description: "A serene and steady energy. You're grounded and appreciate the quiet moments.",
-            image: "../static/images/aura_calm.png"
+            image: "/static/images/aura_calm.png"
         },
         {
             name: "Vibrant Aura",
             scoreRange: [6, 8], // 6-8 points
             description: "Radiant and lively! Your aura is full of energy and enthusiasm.",
-            image: "../static/images/aura_vibrant.png"
+            image: "/static/images/aura_vibrant.png"
         },
         {
             name: "Mystic Aura",
             scoreRange: [9, 10], // 9-10 points (max score for 5 questions with 2 points each is 10)
             description: "Enigmatic and powerful. Your aura holds deep insights and a magnetic presence.",
-            image: "../static/images/aura_mystic.png"
+            image: "/static/images/aura_mystic.png"
         }
     ];
 
