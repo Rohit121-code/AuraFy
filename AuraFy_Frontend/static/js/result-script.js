@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Home Button
     if (homeButton) {
         homeButton.addEventListener('click', () => {
-            fadeOutAndNavigate('index.html');
+            fadeOutAndNavigate('/');
         });
     }
 
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         exitButton.addEventListener('click', () => {
             // Clear session storage if needed upon exit, or just navigate
             sessionStorage.clear(); // Clears all quiz data
-            fadeOutAndNavigate('index.html'); // Navigates back to home
+            fadeOutAndNavigate('/'); // Navigates back to home
         });
     }
 
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.removeItem('userNickname');
             sessionStorage.removeItem('userGeneration');
             // Navigate back to the user info page to start fresh
-            fadeOutAndNavigate('user-info.html'); // Assuming user-info.html is the start of quiz
+            fadeOutAndNavigate('/user-info'); // Assuming user-info.html is the start of quiz
         });
     }
 

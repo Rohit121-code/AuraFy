@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (startButton) {
         startButton.addEventListener('click', () => {
             // When clicked, navigate to the user info page
-            fadeOutAndNavigate('user-info.html');
+            fadeOutAndNavigate('/user-info');
         });
     }
 

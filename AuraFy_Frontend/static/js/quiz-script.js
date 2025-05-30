@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn('User generation not found in sessionStorage. Using default quiz page background.');
         generationBackgroundStyleLink.href = ''; // Clear href if no generation
         // Potentially redirect to home or show an error if generation is crucial for quiz start
-        fadeOutAndNavigate('index.html'); // Added redirect if no userGeneration
+        fadeOutAndNavigate('/'); // Added redirect if no userGeneration
         return; // Stop further execution if no generation
     }
 
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentQuestionIndex >= quizQuestions.length) {
             const auraScore = calculateAuraScore();
             sessionStorage.setItem('auraScore', auraScore);
-            fadeOutAndNavigate('result.html');
+            fadeOutAndNavigate('/result');
             return;
         }
 
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Ensured event listeners are set up after elements are defined
     if (homeButton) {
         homeButton.addEventListener('click', () => {
-            fadeOutAndNavigate('index.html');
+            fadeOutAndNavigate('/');
         });
     }
 
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // If it's the last question, calculate and navigate to results
                 const auraScore = calculateAuraScore();
                 sessionStorage.setItem('auraScore', auraScore);
-                fadeOutAndNavigate('result.html');
+                fadeOutAndNavigate('/result');
             }
         });
     }
