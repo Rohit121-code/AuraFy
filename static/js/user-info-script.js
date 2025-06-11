@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Home button click
     if (homeButton) {
         homeButton.addEventListener('click', () => {
-            fadeOutAndNavigate('/');
+            fadeOutAndNavigate('index.html');
         });
     }
 
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('userGeneration', getGeneration(year));
 
                 // Navigate to the Quiz page
-                fadeOutAndNavigate('/quiz'); 
+                fadeOutAndNavigate('quiz.html'); 
             }
         });
     }

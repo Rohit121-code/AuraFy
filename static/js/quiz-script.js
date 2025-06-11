@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fetchQuestionsFromAI = async () => {
         try {
             // Use POST method as per typical AI API design for sending data in body
-            const response = await fetch('https://aurafy-backend.onrender.com/generate_quiz_questions', {
+            const response = await fetch('http://127.0.0.1:5000/generate_quiz_questions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentQuestionIndex >= quizQuestions.length) {
             const auraScore = calculateAuraScore();
             sessionStorage.setItem('auraScore', auraScore);
-            fadeOutAndNavigate('/result');
+            fadeOutAndNavigate('result.html');
             return;
         }
 
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Ensured event listeners are set up after elements are defined
     if (homeButton) {
         homeButton.addEventListener('click', () => {
-            fadeOutAndNavigate('/');
+            fadeOutAndNavigate('index.html');
         });
     }
 
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // If it's the last question, calculate and navigate to results
                 const auraScore = calculateAuraScore();
                 sessionStorage.setItem('auraScore', auraScore);
-                fadeOutAndNavigate('/result');
+                fadeOutAndNavigate('result.html');
             }
         });
     }

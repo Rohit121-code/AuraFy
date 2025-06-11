@@ -11,7 +11,9 @@ load_dotenv()
 
 app = Flask(__name__)
 # IMPORTANT: Ensure this origin matches your frontend's actual origin (e.g., http://127.0.0.1:5500)
-CORS(app, resources={r"/*": {"origins": ["https://aurafy.netlify.app"]}})
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5000","http://127.0.0.1:5500"]}})
+#backend API if using render as backend check before commiting
+#CORS(app, resources={r"/*": {"origins": ["https://aurafy.netlify.app"]}})
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
