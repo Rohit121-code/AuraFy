@@ -1,75 +1,134 @@
-/* Basic body styles for consistent background and font */
-body {
-    background-color: #1a1a2e; /* Dark background from your quiz/result pages */
-    color: #e0e0e0; /* Light text color */
-    font-family: 'Press Start 2P', cursive; /* Consistent font */
+/* exit-page-style.css */
+:root {
+    --primary-color: #00ffff;
+    --secondary-color: #8a2be2;
+    --accent-color: #ff1493;
+    --bg-dark: #0a0a0f;
+    --text-light: #e6e6fa;
+    --text-cyan: #b0e0e6;
+    --font-heading: 'Orbitron', monospace;
+    --font-body: 'Space Grotesk', sans-serif;
+}
+
+body.exit-page {
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Full viewport height */
-    margin: 0;
-    padding: 20px; /* Some padding around content */
-    box-sizing: border-box; /* Include padding in element's total width and height */
-    text-align: center;
-    /* Fade-in transition for the entire page body */
+    padding: 1rem;
+    color: var(--text-light);
+    background-color: #05020b; /* Deep space color */
     opacity: 0;
-    transition: opacity 0.5s ease-in;
+    animation: fadeInPage 1s ease-out forwards;
 }
 
-body.page-fade-in {
-    opacity: 1;
+@keyframes fadeInPage {
+    to { opacity: 1; }
 }
 
-/* Styling for the central message box */
-.message-box {
-    background-color: #0f3460; /* A slightly lighter dark blue */
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* More prominent shadow */
-    max-width: 600px; /* Max width for readability */
-    width: 90%; /* Responsive width */
-    animation: fadeIn 1s ease-out forwards; /* Fade in animation */
+/* Dynamic Background Styling */
+#dynamic-bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 8s infinite ease-in-out;
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
 }
 
-/* Heading styling */
-h1 {
-    color: #00ffff; /* Neon blue */
-    font-size: 2.5em; /* Larger heading */
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; /* Neon glow */
+/* Main Content Styling */
+.exit-container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    perspective: 1000px;
 }
 
-/* Paragraph text styling */
-p {
-    font-size: 1.1em;
+.exit-card {
+    background: rgba(10, 10, 15, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+    animation: floatIn 1.2s ease-out 0.5s forwards;
+    opacity: 0;
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) rotateX(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
+    }
+}
+
+.exit-logo {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+}
+
+.exit-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.exit-message {
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    color: var(--text-cyan);
+    opacity: 0.9;
     line-height: 1.6;
-    margin-bottom: 15px;
+    margin-bottom: 2.5rem;
 }
 
-/* Call-to-action button styling */
-.cta-button {
-    background-color: #e94560; /* Your red/pinkish accent color */
-    color: #fff;
+.action-button {
+    background: var(--primary-color);
     border: none;
-    padding: 12px 25px;
+    color: var(--bg-dark);
+    padding: 0.8rem 2rem;
     border-radius: 8px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.9em;
+    font-weight: 700;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-decoration: none; /* For link styling */
-    display: inline-block; /* Allows padding and margin */
-    margin-top: 20px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
 }
 
-.cta-button:hover {
-    background-color: #c93d53;
-    transform: translateY(-2px);
+.action-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 30px rgba(0, 255, 255, 0.6);
 }
 
-/* Keyframes for the message box fade-in animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Page fade out for navigation */
+.page-fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
 }

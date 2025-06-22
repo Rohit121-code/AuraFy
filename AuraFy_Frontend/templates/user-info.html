@@ -4,30 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraFy - Tell Us About You!</title>
-   
+    <!-- Fonts from homepage for consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Link to the new CSS file -->
     <link rel="stylesheet" href="/static/css/user-info-page-style.css">
 </head>
 <body class="user-info-page">
+    <!-- Particle Background Container (same as homepage) -->
+    <div class="particles-container" id="particlesContainer"></div>
+    <div class="floating-elements">
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+        <div class="floating-orb orb-4"></div>
+    </div>
+
+    <!-- Home button positioned independently in the corner -->
     <button id="homeButton" class="aura-fy-home-button">AuraFy</button>
 
-    <div class="user-info-content">
-        <h1 class="page-heading">Tell Us About You!</h1>
+    <!-- Main Content -->
+    <main class="user-info-container">
+        <div class="user-info-card">
+            <div class="card-header">
+                <h1 class="page-heading">Create Your Profile</h1>
+                <p class="page-subheading">Let's find the vibe that defines you.</p>
+            </div>
 
-        <div class="input-group">
-            <label for="nicknameInput">Your Nickname:</label>
-            <input type="text" id="nicknameInput" maxlength="8" placeholder="e.g., VibeMaster">
-            <p class="error-message" id="nicknameError"></p>
+            <div class="input-group">
+                <label for="nicknameInput">Nickname</label>
+                <div class="input-wrapper">
+                    <!-- Icon for visual flair -->
+                    <span class="input-icon">✨</span>
+                    <input type="text" id="nicknameInput" maxlength="12" placeholder="e.g., VibeMaster" autocomplete="off">
+                </div>
+                <p class="error-message" id="nicknameError"></p>
+            </div>
+
+            <div class="input-group">
+                <label for="birthYearInput">Birth Year</label>
+                <div class="input-wrapper">
+                     <!-- Icon for visual flair -->
+                    <span class="input-icon">🎂</span>
+                    <input type="number" id="birthYearInput" min="1920" placeholder="e.g., 2005" autocomplete="off">
+                </div>
+                 <p class="error-message" id="birthYearError"></p>
+            </div>
+
+            <p class="generation-display" id="generationDisplay"></p>
+
+            <button id="continueButton" class="pulse-button" disabled>
+                <span class="button-text">Find My Aura</span>
+            </button>
         </div>
-
-        <div class="input-group">
-            <label for="birthYearInput">Your Birth Year:</label>
-            <input type="number" id="birthYearInput" min="1900" max="2025" placeholder="e.g., 2005">
-        </div>
-
-        <p class="generation-display" id="generationDisplay"></p>
-
-        <button id="continueButton" class="main-action-button">Continue</button>
-    </div>
+    </main>
 
     <script src="/static/js/user-info-script.js"></script>
 </body>

@@ -5,18 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraFy - Your Vibe Quiz!</title>
     
-    <link rel="stylesheet" href="/static/css/quiz-page-style.css"> <link id="generationBackgroundStyle" rel="stylesheet" href=""> </head>
-<body class="quiz-page"> <button id="homeButton" class="aura-fy-home-button">AuraFy</button> <div class="quiz-content"> <div class="question-counter">Question <span id="currentQuestionNumber">1</span> of <span id="totalQuestions">8</span></div>
-        <h2 id="questionText" class="question-animation"></h2> <div id="optionsContainer" class="options-container">
-            </div>
+    <!-- Fonts for consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
-        <p id="funFact" class="fun-fact typing-animation"></p>
+    <!-- Base Stylesheet -->
+    <link rel="stylesheet" href="/static/css/quiz-page-style.css">
+    <!-- Link for dynamic generation-specific backgrounds -->
+    <link id="generationBackgroundStyle" rel="stylesheet" href="">
+</head>
+<body class="quiz-page">
+    
+    <!-- Dynamic background containers -->
+    <div id="dynamic-bg-container"></div>
 
-        <div class="navigation-buttons">
-            <button id="previousButton" class="nav-button" style="display: none;">Previous</button>
-            <button id="nextButton" class="nav-button">Next</button>
+    <!-- Home Button Added Back -->
+    <button id="homeButton" class="aura-fy-home-button">AuraFy</button>
+
+    <main id="quiz-container" class="quiz-container">
+        <!-- Loading state -->
+        <div id="loadingState" class="loading-state">
+            <div class="spinner"></div>
+            <p>Crafting your personal vibe check...</p>
         </div>
-    </div>
+
+        <!-- Quiz content (initially hidden) -->
+        <div id="quizState" class="quiz-state hidden">
+            <div class="quiz-header">
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <span id="questionCounter" class="question-counter"></span>
+            </div>
+            
+            <div class="question-area">
+                <p id="funFact" class="fun-fact"></p>
+                <h2 id="questionText" class="question-text"></h2>
+            </div>
+            
+            <div id="optionsContainer" class="options-container">
+                <!-- Options will be dynamically inserted here -->
+            </div>
+            
+            <div class="navigation-buttons">
+                <button id="previousButton" class="nav-button prev">
+                    <span>&larr;</span> Back
+                </button>
+                <button id="nextButton" class="nav-button next" disabled>
+                    Next <span>&rarr;</span>
+                </button>
+            </div>
+        </div>
+    </main>
 
     <script src="/static/js/quiz-script.js"></script>
 </body>

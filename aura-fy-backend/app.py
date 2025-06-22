@@ -1,196 +1,230 @@
 import os
-import json # Import json for parsing
+import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
 import google.generativeai as genai
+# from openai import AzureOpenAI  # Kept for your reference
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
-# IMPORTANT: Ensure this origin matches your frontend's actual origin (e.g., http://127.0.0.1:5500)
-CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5000","http://127.0.0.1:5500"]}})
-#backend API if using render as backend check before commiting
-#CORS(app, resources={r"/*": {"origins": ["https://aurafy.netlify.app"]}})
+# Make sure your frontend's origin is listed here if it's different
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5500", "http://localhost:5500"]}})
 
+# --- Azure OpenAI Configuration (Restored as commented out) ---
+# AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+# AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
+# AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-01")
+# AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
+#
+# if not all([AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY, AZURE_DEPLOYMENT_NAME]):
+#     raise ValueError("Azure OpenAI configuration incomplete. Please check your .env file.")
+#
+# azure_client = AzureOpenAI(
+#     azure_endpoint=AZURE_OPENAI_ENDPOINT,
+#     api_key=AZURE_OPENAI_API_KEY,
+#     api_version=AZURE_OPENAI_API_VERSION
+# )
+
+# --- Gemini Configuration (Enabled) ---
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
-    raise ValueError("GEMINI_API_KEY not found in environment variables. Please set it in .env file.")
+    raise ValueError("GEMINI_API_KEY not found in environment variables. Please set it in your .env file.")
+
+# Configure the Gemini client
 genai.configure(api_key=GEMINI_API_KEY)
-
-# --- NEW: Temporary route to list available models ---
-@app.route('/list_models', methods=['GET'])
-def list_models():
-    try:
-        models = genai.list_models()
-        available_models = []
-        for m in models:
-            # Check if the model supports generateContent
-            if 'generateContent' in m.supported_generation_methods:
-                available_models.append(m.name)
-        return jsonify({"available_generate_content_models": available_models})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-# --- END NEW TEMPORARY ROUTE ---
-
-
-# Initialize the Generative Model (KEEP THIS, BUT WE MIGHT CHANGE 'gemini-pro')
-# Using 'gemini-1.5-flash-latest' as it's a good balance of speed and capability
 model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
 
-# ... (rest of your imports and setup, if any)
 
-@app.route('/generate_quiz_questions', methods=['POST']) # <--- CHANGED FROM GET TO POST
+@app.route('/generate_quiz_questions', methods=['POST'])
 def generate_quiz_questions():
+    """
+    Generates a quiz using the selected Gemini model.
+    """
     try:
-        # Use request.get_json() to get data from the POST request body
         data = request.get_json()
         user_generation = data.get('generation')
 
         if not user_generation:
             return jsonify({"error": "Generation parameter is missing from request body"}), 400
 
-        # --- START UPDATED PROMPT LOGIC ---
+        # Restored your original, more detailed generation_details
         generation_details = {
             "Gen Alpha": {
-                "focus": "digital native experiences, viral trends, short-form video apps (e.g., TikTok), online games (e.g., Roblox, Minecraft), YouTube culture, unique slang, early tech adoption.",
-                "examples": "skibidi toilet, 'pov', 'cap', 'rizz', influencer culture, tablet usage, online learning, gaming consoles, specific YouTube channels.",
-                "avoid": "references to older social media (MySpace, early Facebook), cassette tapes, landlines, very old pop culture (80s/90s), or pre-internet concepts."
+                "focus": "iPad kids culture, Skibidi Toilet phenomenon, Roblox drama, YouTube Kids rabbit holes, tablet parenting, sus behavior, Ohio memes, cringe compilations",
+                "humor_examples": "choosing Fortnite over homework, explaining memes to confused parents, tablet withdrawal symptoms, Roblox relationship drama, YouTube autoplay disasters",
+                "relatable_scenarios": "when the WiFi goes down, trying to explain 'sus' to grandparents, Roblox currency being more valuable than real money",
+                "avoid": "references to older social media, anything pre-smartphone era"
             },
             "Gen Z": {
-                "focus": "social media activism, TikTok, Instagram, Snapchat, mental health awareness, authentic self-expression, side hustles, sustainable living, streaming culture, meme culture, internet slang, brand awareness (ethical/socially conscious).",
-                "examples": "'simp', 'vibe check', 'it's giving...', 'cheugy', 'main character energy', e-sports, sustainable fashion, niche online communities, streaming platforms, political engagement.",
-                "avoid": "references to dial-up internet, flip phones, DVD players, or 90s/early 00s nostalgia not already re-popularized by Gen Z."
+                "focus": "TikTok algorithms controlling life, LinkedIn influencer cringe, adulting failures, therapy speak in casual conversation, side hustle culture, climate anxiety",
+                "humor_examples": "using TikTok for life advice, turning trauma into content, calling everything 'unhinged', LinkedIn influencers posting gym selfies with business advice",
+                "relatable_scenarios": "when your FYP knows you better than your friends, explaining why you can't afford a house with 'just work harder' advice, using therapy terms to describe minor inconveniences",
+                "avoid": "dial-up internet, landlines, anything too millennial-coded"
             },
             "Millennial": {
-                "focus": "early internet (dial-up to broadband), social media pioneers (MySpace, Facebook, Twitter), pop culture nostalgia (90s, early 00s), adulting challenges, side hustles, work-life balance, streaming services, 'peak' internet slang, avocado toast culture.",
-                "examples": "'adulting', 'Netflix and Chill', 'YOLO', 'basic', 'FOMO', Buzzfeed quizzes, blogging, early iPhones, digital cameras, 'Friends' references.",
-                "avoid": "slang exclusive to Gen Z/Alpha, concepts related to very recent viral trends they might not have actively participated in, or pre-80s pop culture."
+                "focus": "adulting is a scam, avocado toast jokes, existential dread about retirement, Disney+ nostalgia binges, side hustle exhaustion, wine mom culture emerging",
+                "humor_examples": "still using Facebook like it's 2008, explaining TikTok to Gen X parents, career pivots every 2 years, treating Target like therapy",
+                "relatable_scenarios": "when you realize you're closer to 40 than 20, kids not knowing what a DVD is, your back hurting from sleeping wrong",
+                "avoid": "too much Gen Z slang, pre-internet nostalgia that's too boomer-coded"
             },
             "Gen X": {
-                "focus": "MTV era, grunge, rise of personal computers, latchkey kids, skepticism, independent thinking, irony, cynicism, work-life integration challenges, classic rock/hip-hop, early internet adopters (but not natives).",
-                "examples": "Grunge music, 80s/90s movies, early internet forums, AOL, Walkman, VCRs, 'whatever', 'as if', Blockbuster Video, early mobile phones.",
-                "avoid": "modern social media specific slang, very recent viral internet trends, or complex concepts related to apps that emerged post-2010."
+                "focus": "forgotten middle child syndrome, peak MTV nostalgia, eye-rolling at younger generations, technology adoption struggles, work-life balance mythbusting",
+                "humor_examples": "teaching millennials what 'real music' sounds like, confused by TikTok dances, still having a landline 'just in case'",
+                "relatable_scenarios": "when kids don't understand why you loved Blockbuster, explaining why grunge was actually deep, being the tech support for both parents and kids",
+                "avoid": "modern social media slang, very recent viral trends"
             },
             "Baby Boomer": {
-                "focus": "post-war prosperity, civil rights movement, rock and roll, counterculture, traditional values (for some), rise of television, retirement, adapting to technology, community engagement, classic literature/films.",
-                "examples": "Woodstock, Beatlemania, Vietnam War, rotary phones, 'groovy', 'far out', home computers (early), landlines, traditional media (newspapers, TV news).",
-                "avoid": "any modern internet slang, social media apps, or technology beyond basic smartphones/email. Focus on their experience of tech adoption vs. native use."
+                "focus": "Facebook conspiracy theories, grandparent spoiling rights, technology confusion, retirement reality vs expectations, trying to understand modern culture",
+                "humor_examples": "posting minion memes unironically, asking why everything needs an app, calling tech support for password resets",
+                "relatable_scenarios": "when you accidentally like someone's photo from 2019, trying to figure out streaming services, explaining 'back in my day' stories",
+                "avoid": "any internet slang, social media beyond Facebook basics"
             },
             "Silent Generation": {
-                "focus": "Great Depression, WWII, Korean War, traditional values, duty, hard work, frugality, strong community ties, early television/radio, stoicism, respect for institutions.",
-                "examples": "Radio dramas, classic Hollywood, patriotism, community gatherings, pen pals, early household appliances, the \"Golden Age\" of film.",
-                "avoid": "any modern technology, internet, or pop culture. Questions should be about their historical context, values, and pre-digital life experiences."
+                "focus": "bewilderment at modern technology, stories that start with 'during the war', strong opinions about manners, frugality as an art form",
+                "humor_examples": "saving plastic containers 'just in case', having strong opinions about thank-you notes, calling all gaming systems 'Nintendo'",
+                "relatable_scenarios": "when you see grocery prices now, watching people stare at phones all day, trying to understand why everyone needs so many coffee choices",
+                "avoid": "any modern technology, internet culture, post-1990s references"
             }
         }
 
-        # Get specific details for the user's generation, default to a general focus if not found
         generation_info = generation_details.get(user_generation, {
-            "focus": "modern trends, technology, social media, slang, or lifestyle relevant to your general age group.",
-            "examples": "",
+            "focus": "general life experiences and cultural touchstones",
+            "humor_examples": "",
+            "relatable_scenarios": "",
             "avoid": ""
         })
 
+        # The prompt to generate the quiz questions
         prompt = f"""
-Generate 5 distinct and engaging multiple-choice quiz questions for a user belonging to the "{user_generation}" generation.
-
-**Question Focus:**
-The questions should primarily focus on:
-- **{generation_info['focus']}**
-- Topics should be highly relevant and recognizable to this specific generation's cultural, technological, and social experiences.
-- Aim for a mix of question types:
-    - Slang/Terminology (e.g., "What does [slang] mean?")
-    - Pop Culture (music, movies, TV shows, games specific to their era or modern resurfacing)
-    - Technology/Social Media (apps, devices, digital habits)
-    - Lifestyle/Trends (e.g., work-life, social issues, consumer habits)
-
-**Question and Option Structure:**
-Each question should have:
-- A 'question' field (string).
-- An 'options' array, where each option is an object with:
-    - 'text' (string)
-    - 'score' (integer between 0 and 2).
-        - A 'score' of **2** means the option is most aligned with modern/digital/vibe culture *relevant to this generation's understanding and participation*.
-        - A 'score' of **1** means the option is somewhat aligned or represents a neutral/older understanding.
-        - A 'score' of **0** means the option is least aligned, incorrect, or represents a very outdated/unaware perspective *for that specific generation*.
-- Keep questions and options concise and clear. Avoid ambiguity.
-
-**Fun Fact:**
-Also, generate one interesting, short, and positive fun fact related to the "{user_generation}" generation's culture, technology usage, or historical impact.
-
-**Examples of topics for "{user_generation}" might include:** {generation_info['examples']}
-**Avoid including:** {generation_info['avoid']}
-
-**Output Format:**
-Provide the entire response as a single JSON object with two top-level keys:
-- 'questions': An array of question objects (as described above).
-- 'funFact': A string containing the generated fun fact.
-
-Example of desired format for the entire response (note: actual content must match '{user_generation}'):
-{{
-    "questions": [
+        You are AuraBot 9000, an unhinged, terminally-online meme lord who ghostwrites viral quizzes. Your goal is to create a quiz that feels so personalized it's slightly psychic.
+        **Step 1: Internal Monologue (Your Thought Process).**
+        First, embody the soul of a "{user_generation}".
+        Second, brainstorm 3 core 'pillars' of their current experience (e.g., for Gen Z: 'The Hustle Delusion', 'Therapy-to-English Dictionary', 'Digital Brain Rot').
+        Third, draft 5 unique, hilarious question concepts based on these pillars. For each concept, also draft a unique, roast-style fun fact related to that specific question's theme.
+        **Step 2: Write the Quiz (Your Output).**
+        Generate the quiz using the strict guidelines below.
+        **HUMOR STYLE GUIDELINES:**
+        - **Hyper-Specific, Not Generic:** Instead of "scrolling on their phone," write "getting lost in a 4-hour TikTok rabbit hole that started with a recipe and somehow ended on flat-earth conspiracies." Specificity is key.
+        - **Self-Deprecating & Uncomfortably Relatable:** The user should laugh and then say, "Ouch, wait... that's me."
+        **MANDATORY QUESTION & ANSWER STRUCTURE:**
+        - You must generate exactly 5 questions.
+        - **Each question object MUST contain a unique "funFact" string.** This fun fact should be a 'micro-roast' related to the question's topic.
+        - Each question must have exactly 4 options with scores.
+        **AVOID:** Anything from this list: {generation_info['avoid']}
+        **CRITICAL OUTPUT FORMAT:**
+        You MUST return ONLY a valid JSON object. Do not include "```json" or any other text outside the curly braces.
+        Example structure:
         {{
-            "question": "What does 'ghosting' mean in dating today?",
-            "options": [
-                {{"text": "Suddenly ending communication without explanation", "score": 2}},
-                {{"text": "A new virtual reality game", "score": 0}},
-                {{"text": "Sending a spooky text message", "score": 0}},
-                {{"text": "Ignoring someone you've seen before", "score": 1}}
-            ]
-        }},
-        {{
-            "question": "Which platform is primarily known for short, viral video content?",
-            "options": [
-                {{"text": "TikTok", "score": 2}},
-                {{"text": "Facebook", "score": 0}},
-                {{"text": "LinkedIn", "score": 0}},
-                {{"text": "YouTube (long-form)", "score": 1}}
+            "questions": [
+                {{
+                    "question": "What's your most {user_generation} way of avoiding adult responsibilities?",
+                    "funFact": "The {user_generation} urge to start a new, elaborate organization system instead of doing the one task they're avoiding.",
+                    "options": [
+                        {{"text": "[Hilariously specific 'Too Real' avoidance tactic]", "score": 2}},
+                        {{"text": "[The productive 'Aspirational' thing they lie about doing]", "score": 1}},
+                        {{"text": "[The unhinged 'Chaotic Neutral' choice]", "score": 1}},
+                        {{"text": "[The funny 'Red Herring' from another generation]", "score": 0}}
+                    ]
+                }}
             ]
         }}
-        // ... 3 more question objects
-    ],
-    "funFact": "Did you know that many Gen Z-ers prefer texting to talking on the phone?"
-}}
-Make sure the entire response is a valid JSON object.
-"""
-        # --- END UPDATED PROMPT LOGIC ---
-
+        """
+        generation_config = genai.types.GenerationConfig(
+            response_mime_type="application/json",
+            temperature=0.9,
+            top_p=0.95
+        )
+        
         response = model.generate_content(
             prompt,
-            generation_config=genai.types.GenerationConfig(
-                temperature=0.7,
-                top_p=0.95,
-                top_k=40,
-            )
+            generation_config=generation_config
         )
-
-        generated_text = response.text.strip()
-
-        # Handle markdown wrapping if Gemini adds it
-        if generated_text.startswith("```json") and generated_text.endswith("```"):
-            generated_text = generated_text[len("```json"):-len("```")].strip()
-        elif generated_text.startswith("```") and generated_text.endswith("```"):
-            generated_text = generated_text[len("```"):-len("```")].strip()
-
-        # Parse the entire response as a JSON object
-        quiz_data = json.loads(generated_text)
-
-        # Validate the structure
+        
+        quiz_data = json.loads(response.text)
+        
         if "questions" not in quiz_data or not isinstance(quiz_data["questions"], list):
-            raise ValueError("AI response missing 'questions' array or invalid format.")
-        if "funFact" not in quiz_data or not isinstance(quiz_data["funFact"], str):
-            # If funFact is missing or not a string, provide a default
-            quiz_data["funFact"] = f"Did you know: {user_generation} are known for their unique perspectives!"
-
+            raise ValueError("AI response missing 'questions' array.")
+        for i, q in enumerate(quiz_data["questions"]):
+            if "funFact" not in q or not isinstance(q["funFact"], str):
+                 q["funFact"] = f"A fun fact about {user_generation} is that they are full of surprises!"
 
         return jsonify(quiz_data)
 
     except Exception as e:
-        print(f"Error generating content or parsing JSON: {e}")
-        print(f"Gemini raw response text: {response.text if 'response' in locals() else 'N/A'}")
-        return jsonify({"error": "Failed to generate questions or fun fact", "details": str(e)}), 500
+        print(f"Error generating quiz: {e}")
+        return jsonify({"error": "Failed to generate quiz.", "details": str(e)}), 500
+
+
+@app.route('/calculate_aura', methods=['POST'])
+def calculate_aura():
+    """
+    Calculates the final aura AND generates a personalized style guide.
+    """
+    try:
+        data = request.get_json()
+        user_generation = data.get('generation')
+        user_answers = data.get('answers')
+
+        if not all([user_generation, user_answers]):
+            return jsonify({"error": "Missing generation or answers in request"}), 400
+
+        answer_summary = "\n".join([f"Q: {item['question']}\nA: {item['answer']}" for item in user_answers])
+
+        # --- THE MODIFICATION: Prompt is updated to request style recommendations ---
+        prompt = f"""
+        You are a Vibe Analyst and a cutting-edge fashion consultant for "{user_generation}".
+        Based on the user's answers, determine their "Aura" and generate a personalized style guide.
+
+        **User's Answers:**
+        {answer_summary}
+
+        **Your Task:**
+        1.  **Aura Name:** Create a hilarious, modern, meme-worthy name for their vibe.
+        2.  **Aura Description:** Write a funny, one-paragraph "loving roast" description of the aura.
+        3.  **Assign a Vibe Score:** Create a score using modern internet slang. The format is CRITICAL. It MUST start with a '+' sign, followed by a number composed *exclusively* of the digit 9 (e.g., +9, +99, +999, +9999). It MUST end with a single, relevant slang word.
+            - **Vibe Score Examples:** "+999 Unhinged", "+9 Respect", "+9999 Based", "+99 Cringe".
+        4.  **Style Recommendations:** Generate a style guide based on their aura. This guide must include:
+            - `productTypes`: An array of 3-4 strings (e.g., ["Oversized hoodie", "Cargo pants", "Beanie"]).
+            - `colorPalette`: An array of 3-4 strings describing the color scheme (e.g., ["Earthy tones", "Neon green accents", "Washed-out black"]).
+            - `dressingStyle`: A short paragraph describing the overall style philosophy.
+
+        **CRITICAL OUTPUT FORMAT:**
+        Return ONLY a valid JSON object.
+
+        Example Response:
+        {{
+            "auraName": "Low-Key Main Character",
+            "auraDescription": "You navigate life with a cinematic soundtrack playing in your head, romanticizing the daily grind...",
+            "vibeScore": "+999 Delulu",
+            "styleRecommendations": {{
+                "productTypes": ["Vintage band t-shirt", "Perfectly worn-in jeans", "Docs or Converse", "A tote bag for emotional baggage"],
+                "colorPalette": ["Monochrome black & white", "A single pop of color", "Faded denim blue"],
+                "dressingStyle": "Your style is effortlessly cool, curated to look like you didn't try, but we all know you did. It's about telling a story with every piece, suggesting a rich inner life that probably involves a secret Spotify playlist for every mood."
+            }}
+        }}
+        """
+
+        generation_config = genai.types.GenerationConfig(
+            response_mime_type="application/json",
+            temperature=0.85
+        )
+
+        response = model.generate_content(prompt, generation_config=generation_config)
+        aura_result = json.loads(response.text)
+
+        # Validation for the new structure
+        if not all(k in aura_result for k in ["auraName", "auraDescription", "vibeScore", "styleRecommendations"]):
+            raise ValueError("AI response is missing required keys.")
+
+        return jsonify(aura_result)
+
+    except Exception as e:
+        print(f"Error calculating aura: {e}")
+        return jsonify({"error": "Failed to calculate aura.", "details": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -1,226 +1,320 @@
 /* user-info-page-style.css */
 
-/* --- User Info Page Body Styling (Background Animation) --- */
-.user-info-page {
-    background-color: #1a1a2e; /* Dark background for animation contrast */
-    overflow: hidden; /* Prevent scrollbars from background animation */
-    position: relative; /* For absolutely positioning elements */
-    min-height: 100vh; /* Ensure full viewport height */
+/* --- Import Root Variables from Homepage --- */
+:root {
+    --primary-color: #00ffff;
+    --secondary-color: #8a2be2;
+    --accent-color: #ff1493;
+    --bg-dark: #0a0a0f;
+    --bg-darker: #050507;
+    --text-light: #e6e6fa;
+    --text-cyan: #b0e0e6;
+    --danger-color: #ff4d4f;
+    --success-color: #00ff88;
+
+    --font-heading: 'Orbitron', monospace;
+    --font-body: 'Space Grotesk', sans-serif;
+
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+}
+
+/* --- Base Body & Background Setup --- */
+body.user-info-page {
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative; /* Needed for absolute positioning of children */
     display: flex;
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center horizontally */
-    padding: 20px;
-    box-sizing: border-box;
-    justify-content: flex-start; /* Align content to the top initially */
+    justify-content: center;
+    align-items: center;
+    color: var(--text-light);
+    padding: var(--spacing-sm);
 }
 
-/* --- Background Animation (Slightly different from home page) --- */
-.user-info-page::before,
-.user-info-page::after {
-    content: '';
+/* --- Re-using Background Elements for Consistency --- */
+.particles-container, .floating-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.particle {
     position: absolute;
-    width: 150vw; /* Slightly smaller than home page for less 'busyness' */
-    height: 150vh;
-    background: linear-gradient(
-        135deg, /* Different angle */
-        rgba(0, 255, 255, 0.1) 0%, /* Cyan */
-        rgba(138, 43, 226, 0.1) 50%, /* Purple */
-        rgba(0, 255, 255, 0.1) 100%
-    );
-    animation: userBgMove 30s linear infinite alternate; /* Different animation and speed */
-    opacity: 0.6;
-    z-index: -1;
-    filter: blur(60px); /* Slightly less blur for more defined shapes */
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.5) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: floatUp 15s linear infinite;
 }
 
-.user-info-page::before {
-    top: -20%;
-    left: -20%;
-    transform: rotate(45deg);
+@keyframes floatUp {
+    from { transform: translateY(100vh) scale(0); opacity: 1; }
+    to { transform: translateY(-100px) scale(1); opacity: 0; }
 }
 
-.user-info-page::after {
-    bottom: -20%;
-    right: -20%;
-    transform: rotate(-75deg);
-    animation-duration: 35s; /* Different speed */
-    opacity: 0.4;
+.floating-orb {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite alternate;
 }
 
-@keyframes userBgMove {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(-30%, -30%) rotate(360deg); } /* Move and rotate */
+.orb-1 { width: 15vw; height: 15vw; background: radial-gradient(circle, rgba(138, 43, 226, 0.2), transparent 70%); top: 10%; left: 5%; animation-delay: 0s; }
+.orb-2 { width: 10vw; height: 10vw; background: radial-gradient(circle, rgba(0, 255, 255, 0.25), transparent 70%); top: 70%; right: 10%; animation-delay: -2s; }
+.orb-3 { width: 20vw; height: 20vw; background: radial-gradient(circle, rgba(255, 20, 147, 0.15), transparent 70%); bottom: 5%; left: 25%; animation-delay: -4s; }
+.orb-4 { display: none; }
+
+@keyframes float {
+    from { transform: translateY(20px) translateX(-10px) rotate(0deg); filter: blur(2px); }
+    to { transform: translateY(-20px) translateX(10px) rotate(45deg); filter: blur(5px); }
 }
 
-/* --- AuraFy Home Button (Top Left) --- */
+/* --- Home Button (Top Left Corner) --- */
 .aura-fy-home-button {
-    position: absolute; /* Position relative to the body */
-    top: 20px;
-    left: 20px;
-    background-color: transparent; /* Transparent background */
-    border: 2px solid #00ffff; /* Cyan border */
-    color: #c8eaea; /* Cyan text */
-    padding: 8px 15px;
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Initial glow */
+    position: absolute; /* Positioned relative to the body */
+    top: 25px;
+    left: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-cyan);
+    padding: 8px 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    border-radius: 8px;
     transition: all 0.3s ease;
-    z-index: 10; /* Ensure it's on top */
+    z-index: 10;
+    cursor: pointer;
 }
 
 .aura-fy-home-button:hover {
-    background-color: rgba(0, 255, 255, 0.1); /* Subtle background on hover */
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); /* More intense glow */
-    transform: translateY(-2px);
+    background: rgba(0, 255, 255, 0.2);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
 }
 
-.aura-fy-home-button:active {
-    transform: translateY(0);
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    background-color: rgba(0, 255, 255, 0.2);
+
+/* --- Main Container & Card --- */
+.user-info-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 480px;
+    animation: fadeIn 1s ease-out;
 }
 
-/* --- Central Content Layout --- */
-.user-info-content {
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
-    padding: 30px;
-    margin-top: 40px; /* Keep this to push it down from top */
-    /* margin-bottom: auto;  <--- REMOVE OR CHANGE THIS */
-    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+.user-info-card {
+    background: rgba(26, 26, 46, 0.6);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: var(--spacing-lg);
+    /* Added subtle glow to integrate with background */
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.2), 0 0 15px rgba(0, 255, 255, 0.1);
     text-align: center;
-    width: 90%;
-    max-width: 500px;
-    z-index: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: var(--spacing-md);
+    animation: slideInFromBottom 0.8s ease-out forwards;
+}
+
+@keyframes slideInFromBottom {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Card Header --- */
+.card-header {
+    margin-bottom: var(--spacing-sm);
 }
 
 .page-heading {
-    color: #e6e6fa; /* Lighter purple/white for contrast */
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px rgba(138, 43, 226, 0.5); /* Glowing text effect */
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    margin-bottom: 0.5rem;
 }
 
-/* Re-style input-group for transparent background */
+.page-subheading {
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    color: var(--text-cyan);
+    opacity: 0.9;
+}
+
+
+/* --- Input Styling --- */
 .input-group {
-    width: 100%; /* Ensure inputs take full width of content box */
-    margin-bottom: 15px;
-    text-align: left; /* Align label and input to left within its group */
+    width: 100%;
+    text-align: left;
 }
 
 .input-group label {
-    display: block; /* Make label appear above input */
-    color: #b0e0e6; /* Light blue/cyan for labels */
-    font-size: 1.1em;
-    margin-bottom: 8px;
-    font-weight: bold;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    display: block;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    opacity: 0.9;
 }
 
-.input-group input[type="text"],
-.input-group input[type="number"] {
-    background-color: rgba(255, 255, 255, 0.1); /* Transparent input background */
-    color: white; /* White text */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
-    padding: 12px 15px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    width: calc(100% - 30px); /* Adjust width for padding */
-    box-sizing: border-box; /* Include padding in width */
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.input-group input {
+    width: 80%;
+    padding: 12px 10px 10px 45px; /* Left padding for icon */
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     transition: all 0.3s ease;
+    /*-moz-appearance: textfield;  For Firefox */
+    box-shadow: none; /* Ensure no default shadow */
 }
 
-.input-group input[type="text"]::placeholder,
-.input-group input[type="number"]::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Lighter placeholder text */
+.input-group input::-webkit-outer-spin-button,
+.input-group input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-.input-group input[type="text"]:focus,
-.input-group input[type="number"]:focus {
-    border-color: #00ffff; /* Cyan border on focus */
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); /* Cyan glow on focus */
-    background-color: rgba(255, 255, 255, 0.15); /* Slightly less transparent on focus */
-    transform: scale(1.0); /* Remove the scale on focus for these inputs for now, or keep it if you like */
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
-.error-message, .generation-display {
-    font-size: 0.9em;
-    margin-top: 5px;
-    height: 1.2em; /* Reserve space to prevent layout shift */
+.input-group input:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.3);
+    /* Make the real border transparent on focus to rely on the shadow border */
+    border-color: transparent;
+    /* THE NEW FIX: A multi-layered inset shadow.
+       The first shadow is a sharp 1.5px "inner border" of bright cyan.
+       The second shadow is a softer, blurrier glow behind it. */
+    box-shadow: inset 0 0 0 1.5px var(--primary-color), inset 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-.error-message { /* Keep this as is for error messages */
-    font-size: 0.9em;
-    margin-top: 5px;
-    height: 1.2em; /* Keep this to prevent layout shift for nickname error */
+.input-group input:focus + .input-icon,
+.input-wrapper:focus-within .input-icon {
+    opacity: 1;
+    color: var(--primary-color);
 }
 
-.generation-display { /* Modify this one */
-    font-size: 1.1em; /* Adjust font size for better visibility */
-    margin-top: -5px; /* Pull it slightly closer to the input above it */
-    margin-bottom: 5px; /* Push it slightly closer to the button below it */
-    /* Remove height: 1.2em; as it's no longer inside an input-group */
-    color: #b0e0e6;
-    font-style: italic;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+/* Error State Styling */
+.input-group input.error {
+    /* Make border transparent to rely on shadow border for consistency */
+    border-color: transparent;
+    /* THE NEW FIX: Use the same multi-layer shadow technique for errors */
+    box-shadow: inset 0 0 0 1.5px var(--danger-color), inset 0 0 10px rgba(255, 77, 79, 0.3);
 }
 
-.main-action-button {
-    /* Use our general button styles but override specific ones */
-    background-color: #00ffff; /* Cyan color */
-    color: #1a1a2e; /* Dark text */
-    padding: 15px 35px;
-    font-size: 1.2em;
-    border-radius: 50px; /* Pill shape */
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Glowing shadow */
-    margin-top: 20px; /* Space from inputs */
+.error-message {
+    color: var(--danger-color);
+    font-size: 0.9rem;
+    height: 1.1rem; /* Reserve space to prevent layout shifts */
+    margin-top: 0.25rem;
+    text-align: right;
 }
 
-.main-action-button:hover {
-    background-color: #00dddd;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.9);
-    transform: translateY(-5px); /* More pronounced hover */
+/* --- Generation Display --- */
+.generation-display {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--success-color);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    height: 1.5rem; /* Reserve space */
+    transition: opacity 0.3s ease;
 }
-
-.main-action-button:active {
-    background-color: #00aaaa;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    transform: translateY(0);
-}
-
-/* Animation for Generation Display */
 .generation-display.animate {
-    animation: fadeInScale 0.7s ease-out forwards; /* Define the animation */
-    /* Ensure initial state is hidden for animation */
-    opacity: 0;
-    transform: scale(0.8);
+    animation: popIn 0.5s ease-out forwards;
 }
 
-@keyframes fadeInScale {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-        filter: blur(5px); /* Start slightly blurred */
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+/* --- Button Styling --- */
+.pulse-button {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: var(--spacing-sm);
+}
+
+.pulse-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 255, 255, 0.5);
+}
+
+.pulse-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* Page Transitions */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.page-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+.page-fade-out {
+    animation: fadeOut 0.5s ease-in forwards;
+}
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .aura-fy-home-button {
+        top: 15px;
+        left: 15px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
     }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.05); /* Slightly overshoot for a subtle bounce */
-        filter: blur(2px);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-        filter: blur(0);
+    .user-info-card {
+        padding: var(--spacing-md);
     }
 }
-/* Ensure general .container styles don't affect this page */
-/* This is done by adding a class to body and linking user-info-page-style.css */

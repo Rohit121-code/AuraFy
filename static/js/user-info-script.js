@@ -1,134 +1,163 @@
-function fadeOutAndNavigate(url) {
-    document.body.classList.add('page-fade-out');
-    setTimeout(() => {
-        window.location.href = url;
-    }, 500);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- DOM Element Selection ---
     const homeButton = document.getElementById('homeButton');
     const continueButton = document.getElementById('continueButton');
     const nicknameInput = document.getElementById('nicknameInput');
     const birthYearInput = document.getElementById('birthYearInput');
     const generationDisplay = document.getElementById('generationDisplay');
     const nicknameError = document.getElementById('nicknameError');
+    const birthYearError = document.getElementById('birthYearError');
+    const particlesContainer = document.getElementById('particlesContainer');
 
-    // --- Generation Detection Logic ---
-    const getGeneration = (year) => {
-        if (!year || isNaN(year)) {
-            return ''; // No year, no generation
-        }
-        const currentYear = new Date().getFullYear();
-        if (year > currentYear || year < 1900) { // Basic sanity check for year
-            return ''; // Year is out of a reasonable range
-        }
+    // --- Utility Functions ---
 
-        if (year >= 2010 && year <= currentYear) { // Defining Gen Alpha (adjust end year as trend evolves)
-            return 'Gen Alpha';
-        } else if (year >= 1997 && year <= 2012) { // Defining Gen Z
-            return 'Gen Z';
-        } else if (year >= 1981 && year <= 1996) { // Defining Millennials
-            return 'Millennials';
-        } else if (year >= 1965 && year <= 1980) { // Defining Gen X
-            return 'Gen X';
-        } else if (year >= 1946 && year <= 1964) { // Defining Baby Boomers
-            return 'Baby Boomers';
-        } else {
-            return 'Older Generation'; // Fallback for very old or very young years
-        }
-    };
-
-    // --- Event Listeners ---
-
-    // Home button click
-    if (homeButton) {
-        homeButton.addEventListener('click', () => {
-            fadeOutAndNavigate('index.html');
-        });
+    /**
+     * Handles the page transition fade-out and navigation.
+     * @param {string} url - The URL to navigate to.
+     */
+    function fadeOutAndNavigate(url) {
+        document.body.classList.add('page-fade-out');
+        setTimeout(() => {
+            window.location.href = url;
+        }, 500); // Duration matches CSS animation
     }
 
-    // Birth year input change (for auto-detecting generation)
-    if (birthYearInput && generationDisplay) {
-        birthYearInput.addEventListener('input', () => {
-        const year = parseInt(birthYearInput.value);
-        let generation = '';
+    /**
+     * Determines the generation based on the birth year.
+     * @param {number} year - The user's birth year.
+     * @returns {string} The name of the generation.
+     */
+    const getGeneration = (year) => {
+        if (!year || isNaN(year)) return '';
         const currentYear = new Date().getFullYear();
+        if (year > currentYear || year < 1920) return '';
+
+        if (year >= 2013) return 'Gen Alpha';
+        if (year >= 1997) return 'Gen Z';
+        if (year >= 1981) return 'Millennial';
+        if (year >= 1965) return 'Gen X';
+        if (year >= 1946) return 'Baby Boomer';
+        return 'Silent Generation';
+    };
+
+    // --- Validation Logic ---
+    let isNicknameValid = false;
+    let isYearValid = false;
+
+    /**
+     * Validates the nickname input field.
+     */
+    function validateNickname() {
         const nickname = nicknameInput.value.trim();
-
-        // Remove animation class before updating content, to allow re-triggering
-        generationDisplay.classList.remove('animate');
-        generationDisplay.textContent = ''; // Clear content first
-
-        if (birthYearInput.value === '') {
-            generationDisplay.textContent = '';
-            generationDisplay.classList.remove('animate'); // Ensure no animation if empty
-            return; // Exit if input is empty
+        if (nickname.length === 0) {
+            nicknameError.textContent = 'Nickname cannot be empty.';
+            nicknameInput.classList.add('error');
+            isNicknameValid = false;
+        } else if (!/^[a-zA-Z0-9_]+$/.test(nickname)) {
+            nicknameError.textContent = 'Letters, numbers, and underscores only.';
+            nicknameInput.classList.add('error');
+            isNicknameValid = false;
+        } else {
+            nicknameError.textContent = '';
+            nicknameInput.classList.remove('error');
+            isNicknameValid = true;
         }
+        updateContinueButtonState();
+    }
 
-        if (isNaN(year) || year < 1900 || year > currentYear) {
-            generationDisplay.textContent = 'Please enter a valid birth year.';
-            generationDisplay.classList.remove('animate'); // No animation for error
+    /**
+     * Validates the birth year and updates the generation display.
+     */
+    function validateAndDisplayGeneration() {
+        const yearValue = birthYearInput.value;
+        const year = parseInt(yearValue);
+        const currentYear = new Date().getFullYear();
+
+        // Clear previous state
+        generationDisplay.classList.remove('animate');
+        generationDisplay.textContent = '';
+        birthYearError.textContent = '';
+        birthYearInput.classList.remove('error');
+        isYearValid = false;
+        
+        if (yearValue.length === 0) {
+            updateContinueButtonState();
             return;
         }
 
-        if (currentYear - year <= 12 && currentYear - year >= 0) {
-            generation = "Gen Alpha";
-            generationDisplay.textContent = `You belong to Gen Alpha!`;
-        } else if (year >= 1997 && year <= 2012) {
-            generation = "Gen Z";
-            generationDisplay.textContent = `You belong to Gen Z!`;
-        } else if (year >= 1981 && year <= 1996) {
-            generation = "Millennial";
-            generationDisplay.textContent = `You belong to the Millennials!`;
-        } else if (year >= 1965 && year <= 1980) {
-            generation = "Gen X";
-            generationDisplay.textContent = `You belong to Gen X!`;
-        } else if (year >= 1946 && year <= 1964) {
-            generation = "Baby Boomer";
-            generationDisplay.textContent = `You belong to the Baby Boomers!`;
-        } else if (year < 1946) {
-            generation = "Silent Generation / Greatest Generation";
-            generationDisplay.textContent = `You belong to the Silent Generation / Greatest Generation!`;
+        if (isNaN(year) || year < 1920 || year > currentYear) {
+            birthYearError.textContent = 'Please enter a valid year (e.g., 1999).';
+            birthYearInput.classList.add('error');
+        } else {
+            const generation = getGeneration(year);
+            generationDisplay.textContent = `You're part of the ${generation} generation!`;
+            // Trigger animation
+            setTimeout(() => generationDisplay.classList.add('animate'), 10);
+            isYearValid = true;
         }
-
-        // Add the animation class AFTER the content is set
-        if (generationDisplay.textContent !== '' && generationDisplay.textContent.includes('You belong to')) {
-            generationDisplay.classList.add('animate');
+        updateContinueButtonState();
+    }
+    
+    /**
+     * Enables or disables the continue button based on input validity.
+     */
+    function updateContinueButtonState() {
+        if (isNicknameValid && isYearValid) {
+            continueButton.disabled = false;
+        } else {
+            continueButton.disabled = true;
         }
-    });
     }
 
-    // Continue button click (validation and navigation)
-    if (continueButton && nicknameInput) {
+    // --- Event Listeners ---
+
+    if (homeButton) {
+        homeButton.addEventListener('click', () => fadeOutAndNavigate('index.html'));
+    }
+
+    if (nicknameInput) {
+        nicknameInput.addEventListener('input', validateNickname);
+    }
+
+    if (birthYearInput) {
+        birthYearInput.addEventListener('input', validateAndDisplayGeneration);
+    }
+    
+    if (continueButton) {
         continueButton.addEventListener('click', () => {
-            const nickname = nicknameInput.value.trim();
-            const year = parseInt(birthYearInput.value);
-            let isValid = true;
-
-            // Nickname validation
-            if (nickname.length === 0) {
-                nicknameError.textContent = 'Nickname cannot be empty.';
-                isValid = false;
-            } else if (nickname.length > 8) {
-                nicknameError.textContent = 'Nickname must be max 8 characters.';
-                isValid = false;
-            } else if (!/^[a-zA-Z0-9]+$/.test(nickname)) { // Regex to allow only alphanumeric
-                nicknameError.textContent = 'No special characters or spaces allowed.';
-                isValid = false;
-            } else {
-                nicknameError.textContent = ''; // Clear error if valid
-            }
-
-            // If all inputs are valid, proceed
-            if (isValid) {
-                // Store nickname and generation in sessionStorage for access on the next page
+            if (!continueButton.disabled) {
+                const nickname = nicknameInput.value.trim();
+                const year = parseInt(birthYearInput.value);
+                
                 sessionStorage.setItem('userNickname', nickname);
                 sessionStorage.setItem('userGeneration', getGeneration(year));
 
-                // Navigate to the Quiz page
-                fadeOutAndNavigate('quiz.html'); 
+                fadeOutAndNavigate('quiz.html');
             }
         });
     }
-     document.body.classList.add('page-fade-in');
+
+    /**
+     * Creates the particle background effect.
+     */
+    function createParticleSystem() {
+        if (!particlesContainer) return;
+        const particleCount = 25; // Fewer particles for a cleaner look on this page
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 4 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 10}s`;
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // --- Initializations ---
+    createParticleSystem();
+    document.body.classList.add('page-fade-in');
 });

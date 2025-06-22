@@ -7,59 +7,71 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/static/css/result-page-style.css">
     <link id="generationBackgroundStyle" rel="stylesheet" href="">
 </head>
-<body class="page-fade-in">
+<body class="result-page">
 
-    <div class="aura-fy-home-button">
-        <button id="homeButton">AuraFy</button>
-    </div>
+    <div id="dynamic-bg-container"></div>
+    <button id="homeButton" class="aura-fy-home-button">AuraFy</button>
+    <button id="exitButton" class="aura-fy-exit-button">Exit</button>
 
-    <div class="exit-button">
-        <button id="exitButton">EXIT</button>
-    </div>
-
-    <div class="result-container">
-        <div class="aura-info-column">
-            <h1 class="main-title">Your Aura Has Been Revealed!</h1>
-            <p class="nickname-message">Hey <span id="nicknameDisplay"></span>, your <span id="generationDisplay"></span> Aura is...</p>
-            
-            <div class="aura-image-container">
-                <img id="auraImage" src="" alt="Your Aura Image" style="display: none;">
-            </div>
-
-            <div class="aura-type-display">
-                <h2 class="aura-type" id="auraType">Calculating Your Aura...</h2>
-                <div class="aura-score-box">
-                    <p>Your Aura Score is:</p>
-                    <p class="aura-score" id="auraScoreDisplay">--</p>
+    <div class="result-grid-container">
+        <!-- Left Column -->
+        <div class="result-column left-column">
+            <h1 class="main-title">Hey <span id="nicknameDisplay"></span>, your <span id="generationDisplay"></span> aura is...</h1>
+            <div class="aura-card">
+                <div class="aura-header">
+                    <h2 id="auraName">Calculating...</h2>
+                    <div id="vibeScore" class="vibe-score-pill">+???</div>
                 </div>
+                <p id="auraDescription">Analyzing the vibes...</p>
             </div>
-
-            <p class="aura-description" id="auraDescription"></p>
-            <p class="vibe-tagline" id="vibeTaglineDisplay">Uncovering your unique vibe...</p>
-
-            <div class="result-actions">
-                <button id="restartButton" class="nav-button">Retake Quiz</button>
+             <div class="result-actions">
+                <button id="restartButton" class="action-button">Retake Quiz</button>
+                <button id="shareButton" class="action-button share">Share Vibe</button>
             </div>
         </div>
 
-        <div class="share-column">
-            <p class="share-prompt">Share your Aura!</p>
-            <div class="share-buttons">
-                <button class="share-button" id="shareFacebook">
-                    <img src="/static/images/facebook.png" alt="Facebook Logo"> Facebook
-                </button>
-                <button class="share-button" id="shareInstagram">
-                    <img src="/static/images/instagram.png" alt="Instagram Logo"> Instagram
-                </button>
-                <button class="share-button" id="shareTwitter">
-                    <img src="/static/images/twitter.png" alt="Twitter Logo"> X (Twitter)
-                </button>
+        <!-- Right Column -->
+        <div class="result-column right-column">
+            <div id="style-guide-container" class="hidden">
+                <h2>Your Vibe's Style Guide</h2>
+                <div class="style-section">
+                    <h3>Key Pieces</h3>
+                    <ul id="productTypesList"></ul>
                 </div>
+                <div class="style-section">
+                    <h3>Color Palette</h3>
+                    <ul id="colorPaletteList"></ul>
+                </div>
+                <div class="style-section">
+                    <h3>Dressing Style</h3>
+                    <p id="dressingStyleText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: Share Modal Structure -->
+    <div id="shareModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="closeModalButton" class="close-modal-button">&times;</button>
+            <h2>Share Your Aura</h2>
+            <p class="share-preview-text">"My AuraFy vibe is <span id="shareAuraName"></span> (<span id="shareVibeScore"></span>)! Find out yours. #AuraFy"</p>
+            <div class="social-share-buttons">
+                <button id="shareToTwitter" class="social-button twitter">
+                    <img src="https://simpleicons.org/icons/x.svg" alt="X Logo"> Share on X
+                </button>
+                <button id="shareToFacebook" class="social-button facebook">
+                     <img src="https://simpleicons.org/icons/facebook.svg" alt="Facebook Logo"> Share on Facebook
+                </button>
+                <button id="copyForInstagram" class="social-button instagram">
+                    <img src="https://simpleicons.org/icons/instagram.svg" alt="Instagram Logo"> Copy for Instagram
+                </button>
+            </div>
         </div>
     </div>
 

@@ -4,15 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraFy - Find Your Aura!</title>
-    
-    <link rel="stylesheet" href="/static/css/home-page-style.css"> </head>
-<body class="home-page"> <div class="home-container"> <h1 class="main-title">AuraFy</h1>
-        <p class="tagline">Let's find your AURA 😄</p>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/home-page-style.css">
+</head>
+<body class="home-page">
+    <button class="exit-button" onclick="fadeOutAndNavigate('exit.html')">
+            <span>Exit</span>
+        </button>
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">AuraFy</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Preparing your aura journey...</div>
+        </div>
+    </div>
 
-        <div class="center-button-wrapper"> <button id="startButton">Start</button>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <div class="floating-elements">
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+        <div class="floating-orb orb-4"></div>
+    </div>
+
+    <div class="home-container">
+        <div class="header-section">
+            <h1 class="main-title">
+                <span class="letter" data-letter="A">A</span>
+                <span class="letter" data-letter="u">u</span>
+                <span class="letter" data-letter="r">r</span>
+                <span class="letter" data-letter="a">a</span>
+                <span class="letter" data-letter="F">F</span>
+                <span class="letter" data-letter="y">y</span>
+            </h1>
+            <p class="tagline">
+                <span class="tagline-text">Let's find your</span>
+                <span class="aura-text">AURA</span>
+                <span class="emoji">😄</span>
+            </p>
+            <div class="subtitle">Discover the energy that defines you</div>
         </div>
 
-        <button class="exit-button" onclick="fadeOutAndNavigate('exit.html')">Exit</button>
+        <div class="stats-section">
+            <div class="stat-item">
+                <div class="stat-number" data-target="10000">0</div>
+                <div class="stat-label">Auras Discovered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="25">0</div>
+                <div class="stat-label">Unique Types</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="99">0</div>
+                <div class="stat-label">Accuracy %</div>
+            </div>
+        </div>
+
+        <div class="center-button-wrapper">
+            <button id="startButton" class="pulse-button">
+                <span class="button-text">Discover My Aura</span>
+                <div class="button-ripple"></div>
+            </button>
+            <div class="button-hint">Click to begin your journey</div>
+        </div>
+
+        <div class="features-preview">
+            <div class="feature-card">
+                <div class="feature-icon">🌟</div>
+                <div class="feature-text">Personalized Analysis</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-text">Instant Results</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-text">Share Your Vibe</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-section">
+        <div class="version-info">v2.0 Beta</div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
 
     <script src="/static/js/script.js"></script>
 </body>
