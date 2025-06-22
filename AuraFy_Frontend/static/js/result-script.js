@@ -70,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
-    if (homeButton) homeButton.onclick = () => fadeOutAndNavigate('index.html');
-    if (restartButton) restartButton.onclick = () => fadeOutAndNavigate('user-info.html');
+    if (homeButton) homeButton.onclick = () => fadeOutAndNavigate('/');
+    if (restartButton) restartButton.onclick = () => fadeOutAndNavigate('/user-info');
     if (exitButton) exitButton.onclick = () => {
         sessionStorage.clear();
-        fadeOutAndNavigate('exit.html');
+        fadeOutAndNavigate('/exit');
     };
 
     // --- Modal Logic ---

@@ -132,7 +132,7 @@ class AuraFy {
                 ripple.style.animation = '';
             });
         }
-        fadeOutAndNavigate('user-info.html');
+        fadeOutAndNavigate('/user-info');
     }
 
     handleResize() {
@@ -144,7 +144,7 @@ class AuraFy {
             this.handleStartClick();
         }
         if (e.key === 'Escape') {
-             fadeOutAndNavigate('exit.html');
+             fadeOutAndNavigate('/exit');
         }
     }
 

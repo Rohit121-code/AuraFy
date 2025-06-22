@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Dynamic Background Setup ---
     function setupBackgrounds() {
         if (!userGeneration) {
-            fadeOutAndNavigate('index.html');
+            fadeOutAndNavigate('/');
             return;
         }
         let cssFile = '', needsJsEffects = 'default';
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('vibeScore', resultData.vibeScore);
             sessionStorage.setItem('styleRecommendations', JSON.stringify(resultData.styleRecommendations));
             
-            fadeOutAndNavigate('result.html');
+            fadeOutAndNavigate('/result');
 
         } catch (error) {
             console.error("Error fetching aura result:", error);
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Initial Setup ---
-    if(homeButton) homeButton.onclick = () => fadeOutAndNavigate('index.html');
+    if(homeButton) homeButton.onclick = () => fadeOutAndNavigate('/');
     nextButton.onclick = handleNext;
     previousButton.onclick = handlePrev;
     

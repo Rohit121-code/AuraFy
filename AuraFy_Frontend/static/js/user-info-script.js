@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners ---
 
     if (homeButton) {
-        homeButton.addEventListener('click', () => fadeOutAndNavigate('index.html'));
+        homeButton.addEventListener('click', () => fadeOutAndNavigate('/'));
     }
 
     if (nicknameInput) {
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('userNickname', nickname);
                 sessionStorage.setItem('userGeneration', getGeneration(year));
 
-                fadeOutAndNavigate('quiz.html');
+                fadeOutAndNavigate('/quiz');
             }
         });
     }
