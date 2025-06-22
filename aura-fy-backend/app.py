@@ -11,7 +11,7 @@ load_dotenv()
 
 app = Flask(__name__)
 # Make sure your frontend's origin is listed here if it's different
-CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5500", "http://localhost:5500"]}})
+CORS(app, resources={r"/*": {"origins": ["https://aurafyqa.netlify.app"]}})
 
 # --- Azure OpenAI Configuration (Restored as commented out) ---
 # AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
