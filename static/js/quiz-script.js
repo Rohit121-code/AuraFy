@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Quiz Logic ---
     async function fetchQuiz() {
         try {
-            const response = await fetch('http://127.0.0.1:5000/generate_quiz_questions', {
+            const response = await fetch('https://aurafy-backend-qa.onrender.com/generate_quiz_questions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ generation: userGeneration }),
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         try {
-            const response = await fetch('http://127.0.0.1:5000/calculate_aura', {
+            const response = await fetch('https://aurafy-backend-qa.onrender.com/calculate_aura', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
